@@ -31,14 +31,39 @@ app.post("/api/cita/test", async (req, res) => {
 
 app.post("/api/post/cita/", async (req, res) => {
   //str = String(req.query.name).split('/')
-  console.log(req);
-  Citas.create({ name: req.query.name, day: req.query.day, user: req.query.user, location: req.query.location,doctor:req.query.doctor })
+  let user = 'abuelito'
+  Citas.create({ name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor })
     .then(() => {
-      return res.json({ name: req.query.name, day: req.query.day, user: req.query.user, location: req.query.location,doctor:req.query.doctor });
+      return res.json({ name: req.body.name, day: req.query.day, user: user, location: req.query.location,doctor:req.query.doctor });
     });
 });
-app.get("/api/get/cita/cita/:id", async (req, res) => {
+app.delete("/api/delete/cita/cita/:id", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Citas.delete(req.params.id).then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+app.post("/api/update/cita/", async (req, res) => {
   //str = String(req.query.name).split('/')
+  let user = 'abuelito'
+  Citas.update({ name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor })
+    .then(() => {
+      return res.json({ name: req.body.name, day: req.query.day, user: user, location: req.query.location,doctor:req.query.doctor });
+    });
+});
+
+app.get("/api/get/cita/cita/:id", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Citas.findById(req.params.id).then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+app.get("/api/get/cita/cita/:id", async (req, res) => {
+  //str = String(req.body.name).split('/')
   Citas.findById(req.params.id).then((response)=>{
     return res.json(response);
   });
@@ -46,7 +71,7 @@ app.get("/api/get/cita/cita/:id", async (req, res) => {
   
 });
 app.get("/api/get/cita/user/:user", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Citas.findByUser(req.params.user).then((response)=>{
     return res.json(response);
   });
@@ -54,7 +79,7 @@ app.get("/api/get/cita/user/:user", async (req, res) => {
   
 });
 app.get("/api/get/cita/all", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Citas.findAll().then((response)=>{
     return res.json(response);
   });
@@ -74,22 +99,44 @@ app.post("/api/meds/test", async (req, res) => {
 
 app.post("/api/post/meds/", async (req, res) => {
   //str = String(req.query.name).split('/')
-  console.log(req);
-  Meds.create({ name: req.query.name, function: req.query.function, time: req.query.time, user: req.query.user})
+  //console.log(req);
+  let user = 'abuelito'
+  Meds.create({ name: req.body.name, function: req.body.function, time: req.body.time, user: user})
     .then(() => {
-      return res.json({ name: req.query.name, function: req.query.function, time: req.query.time, user: req.query.user});
+      return res.json({ name: req.body.name, function: req.body.function, time: req.body.time, user: user});
     });
 });
-app.get("/api/get/meds/cita/:id", async (req, res) => {
+
+app.post("/api/update/meds/", async (req, res) => {
   //str = String(req.query.name).split('/')
+  //console.log(req);
+  let user = 'abuelito'
+  Meds.update({ name: req.body.name, function: req.body.function, time: req.body.time, user: user})
+    .then(() => {
+      return res.json({ name: req.body.name, function: req.body.function, time: req.body.time, user: user});
+    });
+});
+
+app.get("/api/get/meds/cita/:id", async (req, res) => {
+  //str = String(req.body.name).split('/')
   Meds.findById(req.params.id).then((response)=>{
     return res.json(response);
   });
   //console.log(req);
   
 });
+
+app.delete("/api/delete/meds/cita/:id", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Meds.delete(req.params.id).then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+
 app.get("/api/get/meds/user/:user", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Meds.findByUser(req.params.user).then((response)=>{
     return res.json(response);
   });
@@ -97,7 +144,7 @@ app.get("/api/get/meds/user/:user", async (req, res) => {
   
 });
 app.get("/api/get/meds/all", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Meds.findAll().then((response)=>{
     return res.json(response);
   });
@@ -119,22 +166,52 @@ app.post("/api/feels/test", async (req, res) => {
 
 app.post("/api/post/feels/", async (req, res) => {
   //str = String(req.query.name).split('/')
-  console.log(req);
-  Feels.create({day: req.query.day, feeling: req.query.feeling, user: req.query.user})
+
+  var dateObj = new Date();
+  var month = dateObj.getMonth() + 1; //months from 1-12
+  var day = dateObj.getDate();
+  var year = dateObj.getFullYear();
+  let date = day + '/' + month + '/' + year;
+  let user = 'abuelito1000';
+  Feels.create({day: date, feeling: req.body.feeling, user: user})
     .then(() => {
-      return res.json({day: req.query.day, feeling: req.query.feeling, user: req.query.user});
+      return res.json({day: date, feeling: req.body.feeling, user: user});
     });
 });
-app.get("/api/get/feels/cita/:id", async (req, res) => {
+app.post("/api/update/feels/", async (req, res) => {
   //str = String(req.query.name).split('/')
+
+  var dateObj = new Date();
+  var month = dateObj.getMonth() + 1; //months from 1-12
+  var day = dateObj.getDate();
+  var year = dateObj.getFullYear();
+  let date = day + '/' + month + '/' + year;
+  let user = 'abuelito1000';
+  Feels.update({day: date, feeling: req.body.feeling, user: user})
+    .then(() => {
+      return res.json({day: date, feeling: req.body.feeling, user: user});
+    });
+});
+
+
+app.get("/api/get/feels/cita/:id", async (req, res) => {
+  //str = String(req.body.name).split('/')
   Feels.findById(req.params.id).then((response)=>{
     return res.json(response);
   });
   //console.log(req);
   
 });
+app.get("/api/delete/feels/cita/:id", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Feels.delete(req.params.id).then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
 app.get("/api/get/feels/user/:user", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Feels.findByUser(req.params.user).then((response)=>{
     return res.json(response);
   });
@@ -142,7 +219,7 @@ app.get("/api/get/feels/user/:user", async (req, res) => {
   
 });
 app.get("/api/get/feels/all", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Feels.findAll().then((response)=>{
     return res.json(response);
   });
@@ -162,15 +239,23 @@ app.post("/api/signs/test", async (req, res) => {
 });
 
 app.post("/api/post/signs/", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   console.log(req);
-  Signs.create({day: req.query.day, date: req.query.date,pulse: req.query.pulse, sys: req.query.sys, user: req.query.user})
+  Signs.create({day: req.body.day, date: req.body.date,pulse: req.body.pulse, sys: req.body.sys, user: req.body.user})
     .then(() => {
-      return res.json({day: req.query.day, date: req.query.date,pulse: req.query.pulse, sys: req.query.sys, user: req.query.user});
+      return res.json({day: req.body.day, date: req.body.date,pulse: req.body.pulse, sys: req.body.sys, user: req.body.user});
+    });
+});
+app.post("/api/update/signs/", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  console.log(req);
+  Signs.update({day: req.body.day, date: req.body.date,pulse: req.body.pulse, sys: req.body.sys, user: req.body.user})
+    .then(() => {
+      return res.json({day: req.body.day, date: req.body.date,pulse: req.body.pulse, sys: req.body.sys, user: req.body.user});
     });
 });
 app.get("/api/get/signs/cita/:id", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Signs.findById(req.params.id).then((response)=>{
     return res.json(response);
   });
@@ -178,7 +263,7 @@ app.get("/api/get/signs/cita/:id", async (req, res) => {
   
 });
 app.get("/api/get/signs/user/:user", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Signs.findByUser(req.params.user).then((response)=>{
     return res.json(response);
   });
@@ -186,13 +271,13 @@ app.get("/api/get/signs/user/:user", async (req, res) => {
   
 });
 app.get("/api/get/signs/all", async (req, res) => {
-  //str = String(req.query.name).split('/')
+  //str = String(req.body.name).split('/')
   Signs.findAll().then((response)=>{
     return res.json(response);
   });
   //console.log(req);
   
 });
-signs
+
 
 module.exports = app;

@@ -13,6 +13,19 @@ exports.create = (event) => {
     doctor: event.doctor
   });
 }
+exports.update = (event) => {
+  return eventsRef.child(event.id).update({
+    id: event.id,
+    name: event.name,
+    day: event.day,
+    user: event.user,
+    location: event.location,
+    doctor: event.doctor
+  });
+}
+exports.delete = (id) => {
+  return eventsRef.child(event.id).delete();
+}
 
 exports.findById = (id) => {
   return new Promise((resolve, reject) => {

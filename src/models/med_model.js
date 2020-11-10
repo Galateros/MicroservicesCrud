@@ -12,6 +12,18 @@ exports.create = (event) => {
     user: event.user,
   });
 }
+exports.update = (event) => {
+  return eventsRef.child(event.id).update({
+    id: event.id,
+    name: event.name,
+    function: event.function,
+    time: event.time,
+    user: event.user,
+  });
+}
+exports.delete = (id) => {
+  return eventsRef.child(event.id).delete();
+}
 
 exports.findById = (id) => {
   return new Promise((resolve, reject) => {
