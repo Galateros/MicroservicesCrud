@@ -13,6 +13,7 @@ exports.create = (event) => {
   });
 }
 exports.update = (event) => {
+  console.log('update: ', event)
   return eventsRef.child(event.id).update({
     id: event.id,
     name: event.name,
@@ -21,8 +22,8 @@ exports.update = (event) => {
     user: event.user,
   });
 }
-exports.delete = (id) => {
-  return eventsRef.child(event.id).delete();
+exports.delete = (event) => {
+  return eventsRef.child(event).remove();
 }
 
 exports.findById = (id) => {

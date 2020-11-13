@@ -5,9 +5,11 @@ const Feels = require("./models/feel_model");
 const Signs = require("./models/sign_model");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors")
 
 var sm = 0;
 
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded())
@@ -32,25 +34,31 @@ app.post("/api/cita/test", async (req, res) => {
 app.post("/api/post/cita/", async (req, res) => {
   //str = String(req.query.name).split('/')
   let user = 'abuelito'
-  Citas.create({ name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor })
+  let status = 'pending'
+  Citas.create({ name: req.body.name, day: req.body.day, user: user, location: req.body.location, doctor:req.body.doctor, status: status })
     .then(() => {
-      return res.json({ name: req.body.name, day: req.query.day, user: user, location: req.query.location,doctor:req.query.doctor });
+      return res.json({ name: req.body.name, day: req.query.day, user: user, location: req.query.location,doctor:req.query.doctor, status: status });
     });
 });
 app.delete("/api/delete/cita/cita/:id", async (req, res) => {
   //str = String(req.body.name).split('/')
+  console.log("id de delete", req.params.id);
   Citas.delete(req.params.id).then((response)=>{
+    console.log('okey');
     return res.json(response);
   });
   //console.log(req);
   
 });
-app.post("/api/update/cita/", async (req, res) => {
+app.put("/api/update/cita/:id", async (req, res) => {
   //str = String(req.query.name).split('/')
   let user = 'abuelito'
-  Citas.update({ name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor })
+  let id = req.params.id;
+  console.log('back', req.body)
+
+  Citas.update({ id: id, name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor })
     .then(() => {
-      return res.json({ name: req.body.name, day: req.query.day, user: user, location: req.query.location,doctor:req.query.doctor });
+      return res.json({ id:id, name: req.body.name, day: req.query.day, user: user, location: req.query.location,doctor:req.query.doctor });
     });
 });
 
@@ -107,15 +115,20 @@ app.post("/api/post/meds/", async (req, res) => {
     });
 });
 
-app.post("/api/update/meds/", async (req, res) => {
+app.put("/api/update/meds/:id", async (req, res) => {
   //str = String(req.query.name).split('/')
   //console.log(req);
   let user = 'abuelito'
-  Meds.update({ name: req.body.name, function: req.body.function, time: req.body.time, user: user})
+  let id = req.params.id;
+  console.log('back', req.body)
+  
+  Meds.update({ id: id, name: req.body.name, function: req.body.function, time: req.body.time, user: user})
     .then(() => {
-      return res.json({ name: req.body.name, function: req.body.function, time: req.body.time, user: user});
+      return res.json({ id: id, name: req.body.name, function: req.body.function, time: req.body.time, user: user});
     });
+  
 });
+// CAMBIAR MED_MODEL PARA QUE PUEDA EDITAR
 
 app.get("/api/get/meds/cita/:id", async (req, res) => {
   //str = String(req.body.name).split('/')

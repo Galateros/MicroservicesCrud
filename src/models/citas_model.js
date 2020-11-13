@@ -20,11 +20,13 @@ exports.update = (event) => {
     day: event.day,
     user: event.user,
     location: event.location,
-    doctor: event.doctor
+    doctor: event.doctor,
+    status: event.status
   });
 }
-exports.delete = (id) => {
-  return eventsRef.child(event.id).delete();
+exports.delete = (event) => {
+  console.log("model event", event.id, event);
+  return eventsRef.child(event).remove();
 }
 
 exports.findById = (id) => {
