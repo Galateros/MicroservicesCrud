@@ -10,6 +10,7 @@ exports.create = (event) => {
     function: event.function,
     time: event.time,
     user: event.user,
+    status: event.status
   });
 }
 exports.update = (event) => {
@@ -21,6 +22,14 @@ exports.update = (event) => {
     time: event.time,
     user: event.user,
   });
+}
+
+exports.updateStatus = (event) => {
+  console.log('model', event, event.status);
+  return eventsRef.child(event.id).update({
+    status: event.status
+  })
+
 }
 exports.delete = (event) => {
   return eventsRef.child(event).remove();

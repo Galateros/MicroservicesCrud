@@ -10,10 +10,13 @@ exports.create = (event) => {
     day: event.day,
     user: event.user,
     location: event.location,
-    doctor: event.doctor
+    doctor: event.doctor,
+    status: event.status
+
   });
 }
 exports.update = (event) => {
+
   return eventsRef.child(event.id).update({
     id: event.id,
     name: event.name,
@@ -21,8 +24,14 @@ exports.update = (event) => {
     user: event.user,
     location: event.location,
     doctor: event.doctor,
-    status: event.status
   });
+}
+
+exports.updateStatus = (event) => {
+  console.log('model', event, event.status);
+  return eventsRef.child(event.id).update({
+    status: event.status
+  })
 }
 exports.delete = (event) => {
   console.log("model event", event.id, event);

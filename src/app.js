@@ -58,9 +58,22 @@ app.put("/api/update/cita/:id", async (req, res) => {
 
   Citas.update({ id: id, name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor })
     .then(() => {
-      return res.json({ id:id, name: req.body.name, day: req.query.day, user: user, location: req.query.location,doctor:req.query.doctor });
+      return res.json({ id:id, name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor });
     });
 });
+
+app.put("/api/update/cita/status/:id", async(req, res) => {
+  let id = req.params.id;
+  console.log("back put", id, req.body)
+  Citas.updateStatus({id: id, status: req.body.status})
+  .then(() => {
+    return res.json('cita edited');
+  })
+  .catch(() => {
+    return err;
+  })
+
+}); 
 
 app.get("/api/get/cita/cita/:id", async (req, res) => {
   //str = String(req.body.name).split('/')
@@ -109,9 +122,10 @@ app.post("/api/post/meds/", async (req, res) => {
   //str = String(req.query.name).split('/')
   //console.log(req);
   let user = 'abuelito'
-  Meds.create({ name: req.body.name, function: req.body.function, time: req.body.time, user: user})
+  let status = 'pending'
+  Meds.create({ name: req.body.name, function: req.body.function, time: req.body.time, user: user, status: status})
     .then(() => {
-      return res.json({ name: req.body.name, function: req.body.function, time: req.body.time, user: user});
+      return res.json({ name: req.body.name, function: req.body.function, time: req.body.time, user: user, status: status});
     });
 });
 
@@ -128,6 +142,19 @@ app.put("/api/update/meds/:id", async (req, res) => {
     });
   
 });
+
+app.put("/api/update/meds/status/:id", async(req, res) => {
+  let id = req.params.id;
+  console.log("back put", id, req.body)
+  Citas.updateStatus({id: id, status: req.body.status})
+  .then(() => {
+    return res.json('meds edited');
+  })
+  .catch(() => {
+    return err;
+  })
+
+}); 
 // CAMBIAR MED_MODEL PARA QUE PUEDA EDITAR
 
 app.get("/api/get/meds/cita/:id", async (req, res) => {
@@ -180,12 +207,15 @@ app.post("/api/feels/test", async (req, res) => {
 app.post("/api/post/feels/", async (req, res) => {
   //str = String(req.query.name).split('/')
 
-  var dateObj = new Date();
+  var date = new Date();
+  /*
   var month = dateObj.getMonth() + 1; //months from 1-12
   var day = dateObj.getDate();
   var year = dateObj.getFullYear();
   let date = day + '/' + month + '/' + year;
+  */
   let user = 'abuelito1000';
+  
   Feels.create({day: date, feeling: req.body.feeling, user: user})
     .then(() => {
       return res.json({day: date, feeling: req.body.feeling, user: user});
@@ -194,16 +224,26 @@ app.post("/api/post/feels/", async (req, res) => {
 app.post("/api/update/feels/", async (req, res) => {
   //str = String(req.query.name).split('/')
 
-  var dateObj = new Date();
+  var date = new Date();
+  /*
   var month = dateObj.getMonth() + 1; //months from 1-12
   var day = dateObj.getDate();
   var year = dateObj.getFullYear();
   let date = day + '/' + month + '/' + year;
+  */
   let user = 'abuelito1000';
   Feels.update({day: date, feeling: req.body.feeling, user: user})
     .then(() => {
       return res.json({day: date, feeling: req.body.feeling, user: user});
     });
+});
+
+app.get('/api/get/feels/future', async (req, res) => {
+  var dateNow = new Date();
+  Feels.findFutureDate(dateNow).then((response) => {
+    return res.json(response);
+  })
+
 });
 
 

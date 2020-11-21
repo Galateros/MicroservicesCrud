@@ -55,6 +55,26 @@ exports.findAll = () => {
     });
   })
 }
+
+exports.findFutureDate = (dateNow) => {
+  return new Promise((resolve, reject) => {
+    eventsRef.where("date", "<=", dateNow).get().on("value", function (snapshot) {
+      let event = snapshot.val()
+      snapshot.forEach(function (data) {
+        event = data.val()
+        if (event) {
+          resolve(event)
+        }
+      })
+      if (!snapshot.hasChildren()) {
+        reject(null)
+      }
+    }); 
+      
+    
+  })
+}
+
 exports.findByUser = (id) => {
   return new Promise((resolve, reject) => {
     eventsRef.orderByChild('user').equalTo(id).on("value", function (snapshot) {
