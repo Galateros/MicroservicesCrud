@@ -16,10 +16,10 @@ exports.create = (event) => {
 exports.update = (event) => {
   return eventsRef.child(event.id).update({
     id: event.id,
-    day: event.day,
-    date: event.date,
-    pulse: event.pulse,
     sys: event.sys,
+    day: event.day,
+    pulse: event.pulse,
+    date: event.date,
     user: event.user,
   });
 }

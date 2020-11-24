@@ -33,11 +33,10 @@ app.post("/api/cita/test", async (req, res) => {
 
 app.post("/api/post/cita/", async (req, res) => {
   //str = String(req.query.name).split('/')
-  let user = 'abuelito'
   let status = 'pending'
-  Citas.create({ name: req.body.name, day: req.body.day, user: user, location: req.body.location, doctor:req.body.doctor, status: status })
+  Citas.create({ name: req.body.name, day: req.body.day, user: req.body.user, location: req.body.location, doctor:req.body.doctor, status: status })
     .then(() => {
-      return res.json({ name: req.body.name, day: req.query.day, user: user, location: req.query.location,doctor:req.query.doctor, status: status });
+      return res.json({ name: req.body.name, day: req.query.day, user: req.body.user, location: req.query.location,doctor:req.query.doctor, status: status });
     });
 });
 app.delete("/api/delete/cita/cita/:id", async (req, res) => {
@@ -52,13 +51,12 @@ app.delete("/api/delete/cita/cita/:id", async (req, res) => {
 });
 app.put("/api/update/cita/:id", async (req, res) => {
   //str = String(req.query.name).split('/')
-  let user = 'abuelito'
   let id = req.params.id;
   console.log('back', req.body)
 
-  Citas.update({ id: id, name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor })
+  Citas.update({ id: id, name: req.body.name, day: req.body.day, user: req.body.user, location: req.body.location,doctor:req.body.doctor })
     .then(() => {
-      return res.json({ id:id, name: req.body.name, day: req.body.day, user: user, location: req.body.location,doctor:req.body.doctor });
+      return res.json({ id:id, name: req.body.name, day: req.body.day, user: req.body.user, location: req.body.location,doctor:req.body.doctor });
     });
 });
 
@@ -121,24 +119,22 @@ app.post("/api/meds/test", async (req, res) => {
 app.post("/api/post/meds/", async (req, res) => {
   //str = String(req.query.name).split('/')
   //console.log(req);
-  let user = 'abuelito'
   let status = 'pending'
-  Meds.create({ name: req.body.name, function: req.body.function, time: req.body.time, user: user, status: status})
+  Meds.create({ name: req.body.name, function: req.body.function, time: req.body.time, user: req.body.user, status: status})
     .then(() => {
-      return res.json({ name: req.body.name, function: req.body.function, time: req.body.time, user: user, status: status});
+      return res.json({ name: req.body.name, function: req.body.function, time: req.body.time, user: req.body.user, status: status});
     });
 });
 
 app.put("/api/update/meds/:id", async (req, res) => {
   //str = String(req.query.name).split('/')
   //console.log(req);
-  let user = 'abuelito'
   let id = req.params.id;
   console.log('back', req.body)
   
-  Meds.update({ id: id, name: req.body.name, function: req.body.function, time: req.body.time, user: user})
+  Meds.update({ id: id, name: req.body.name, function: req.body.function, time: req.body.time, user: req.body.user})
     .then(() => {
-      return res.json({ id: id, name: req.body.name, function: req.body.function, time: req.body.time, user: user});
+      return res.json({ id: id, name: req.body.name, function: req.body.function, time: req.body.time, user: req.body.user});
     });
   
 });
@@ -207,18 +203,17 @@ app.post("/api/feels/test", async (req, res) => {
 app.post("/api/post/feels/", async (req, res) => {
   //str = String(req.query.name).split('/')
 
-  var date = new Date();
+  var date = String(new Date());
   /*
   var month = dateObj.getMonth() + 1; //months from 1-12
   var day = dateObj.getDate();
   var year = dateObj.getFullYear();
   let date = day + '/' + month + '/' + year;
   */
-  let user = 'abuelito1000';
   
-  Feels.create({day: date, feeling: req.body.feeling, user: user})
+  Feels.create({day: date, feeling: req.body.feeling, user: req.body.user})
     .then(() => {
-      return res.json({day: date, feeling: req.body.feeling, user: user});
+      return res.json({day: date, feeling: req.body.feeling, user: req.body.user});
     });
 });
 app.post("/api/update/feels/", async (req, res) => {
@@ -293,18 +288,25 @@ app.post("/api/signs/test", async (req, res) => {
 
 app.post("/api/post/signs/", async (req, res) => {
   //str = String(req.body.name).split('/')
-  console.log(req);
-  Signs.create({day: req.body.day, date: req.body.date,pulse: req.body.pulse, sys: req.body.sys, user: req.body.user})
+  var date = String(new Date());
+
+  const sign = await Signs.create({sys: req.body.sys, day: req.body.day, pulse: req.body.pulse, date: date,  user: req.body.user})
     .then(() => {
-      return res.json({day: req.body.day, date: req.body.date,pulse: req.body.pulse, sys: req.body.sys, user: req.body.user});
+      
     });
+    console.log("sign", sign);
+    return res.json(sign);
+    
+
 });
 app.post("/api/update/signs/", async (req, res) => {
   //str = String(req.body.name).split('/')
   console.log(req);
-  Signs.update({day: req.body.day, date: req.body.date,pulse: req.body.pulse, sys: req.body.sys, user: req.body.user})
+  var date = new Date();
+
+  Signs.update({sys: req.body.sys, day: req.body.day, pulse: req.body.pulse, date: date,  user: req.body.user})
     .then(() => {
-      return res.json({day: req.body.day, date: req.body.date,pulse: req.body.pulse, sys: req.body.sys, user: req.body.user});
+      return res.json({sys: req.body.sys, day: req.body.day, pulse: req.body.pulse, date: date,  user: req.body.user});
     });
 });
 app.get("/api/get/signs/cita/:id", async (req, res) => {
