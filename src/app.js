@@ -279,8 +279,10 @@ app.get("/api/get/feels/all", async (req, res) => {
 //Sentimientos
 
 app.post("/api/signs/test", async (req, res) => {
+  
   Signs.create({day: "Test MS", date: "Test MS",pulse: "Test MS", sys: "Test MS", user: "Test MS"})
     .then(() => {
+      
       return res.json({day: "Test MS", date: "Test MS",pulse: "Test MS", sys: "Test MS", user: "Test MS"});
     });
   
@@ -288,14 +290,14 @@ app.post("/api/signs/test", async (req, res) => {
 
 app.post("/api/post/signs/", async (req, res) => {
   //str = String(req.body.name).split('/')
+  console.log("hola");
   var date = String(new Date());
 
-  const sign = await Signs.create({sys: req.body.sys, day: req.body.day, pulse: req.body.pulse, date: date,  user: req.body.user})
+  Signs.create({sys: req.body.sys, day: req.body.day, pulse: req.body.pulse, user: req.body.user, date: date })
     .then(() => {
-      
+      return res.json({sys: req.body.sys, day: req.body.day, pulse: req.body.pulse, user: req.body.user, date: date});
     });
-    console.log("sign", sign);
-    return res.json(sign);
+    
     
 
 });

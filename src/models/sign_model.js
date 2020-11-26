@@ -6,11 +6,11 @@ exports.create = (event) => {
   let key = eventsRef.push().key
   return eventsRef.child(key).set({
     id: key,
-    day: event.day,
-    date: event.date,
-    pulse: event.pulse,
     sys: event.sys,
+    day: event.day,
+    pulse: event.pulse,
     user: event.user,
+    date: event.date,
   });
 }
 exports.update = (event) => {
@@ -19,8 +19,9 @@ exports.update = (event) => {
     sys: event.sys,
     day: event.day,
     pulse: event.pulse,
-    date: event.date,
     user: event.user,
+    date: event.date,
+    
   });
 }
 exports.delete = (id) => {
