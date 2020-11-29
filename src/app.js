@@ -62,7 +62,7 @@ app.put("/api/update/cita/:id", async (req, res) => {
 
 app.put("/api/update/cita/status/:id", async(req, res) => {
   let id = req.params.id;
-  console.log("back put", id, req.body)
+  console.log("back put", id, req.body.status)
   Citas.updateStatus({id: id, status: req.body.status})
   .then(() => {
     return res.json('cita edited');
@@ -165,13 +165,12 @@ app.put("/api/update/meds/:id", async (req, res) => {
     });
   
 });
-
 app.put("/api/update/meds/status/:id", async(req, res) => {
   let id = req.params.id;
-  console.log("back put", id, req.body)
-  Citas.updateStatus({id: id, status: req.body.status})
+  console.log("back put", id, req.body.status)
+  Meds.updateStatus({id: id, status: req.body.status})
   .then(() => {
-    return res.json('meds edited');
+    return res.json('cita edited');
   })
   .catch(() => {
     return err;
@@ -214,6 +213,34 @@ app.get("/api/get/meds/all", async (req, res) => {
   //console.log(req);
   
 });
+
+app.get("/api/get/meds/pending", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Meds.findPending().then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+
+app.get("/api/get/meds/completed", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Citas.findCompleted().then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+
+app.get("/api/get/meds/missing", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Meds.findMissing().then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+
 
 
 
@@ -362,6 +389,8 @@ app.get("/api/get/signs/all", async (req, res) => {
   //console.log(req);
   
 });
+
+
 
 app.get("/api/get/signs/last/:user", async (req, res) => {
   // query
