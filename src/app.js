@@ -106,6 +106,33 @@ app.get("/api/get/cita/all", async (req, res) => {
   
 });
 
+app.get("/api/get/cita/pending", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Citas.findPending().then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+
+app.get("/api/get/cita/completed", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Citas.findCompleted().then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+
+app.get("/api/get/cita/missing", async (req, res) => {
+  //str = String(req.body.name).split('/')
+  Citas.findMissing().then((response)=>{
+    return res.json(response);
+  });
+  //console.log(req);
+  
+});
+
 //MEDICAMENTOS
 
 app.post("/api/meds/test", async (req, res) => {
@@ -335,6 +362,13 @@ app.get("/api/get/signs/all", async (req, res) => {
   //console.log(req);
   
 });
+
+app.get("/api/get/signs/last/:user", async (req, res) => {
+  // query
+  Signs.findLastSign(req.params.user).then((response) => {
+    return res.json(response);
+  })
+})
 
 
 module.exports = app;

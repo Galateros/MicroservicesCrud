@@ -70,6 +70,55 @@ exports.findAll = () => {
     });
   })
 }
+
+exports.findPending = () => {
+  return new Promise((resolve, reject) => {
+    eventsRef.orderByChild('status').equalTo('pending').on("value", function (snapshot) {
+      snapshot.forEach(function (data) {
+        let events = snapshot.val()
+        if (events) {
+          resolve(events)
+        }
+      })
+      if (!snapshot.hasChildren()) {
+        reject(null)
+      }
+    });
+  });
+}
+
+exports.findCompleted = () => {
+  return new Promise((resolve, reject) => {
+    eventsRef.orderByChild('status').equalTo('completed').on("value", function (snapshot) {
+      snapshot.forEach(function (data) {
+        let events = snapshot.val()
+        if (events) {
+          resolve(events)
+        }
+      })
+      if (!snapshot.hasChildren()) {
+        reject(null)
+      }
+    });
+  });
+}
+
+exports.findMissing = () => {
+  return new Promise((resolve, reject) => {
+    eventsRef.orderByChild('status').equalTo('missing').on("value", function (snapshot) {
+      snapshot.forEach(function (data) {
+        let events = snapshot.val()
+        if (events) {
+          resolve(events)
+        }
+      })
+      if (!snapshot.hasChildren()) {
+        reject(null)
+      }
+    });
+  });
+}
+
 exports.findByUser = (id) => {
   return new Promise((resolve, reject) => {
     eventsRef.orderByChild('user').equalTo(id).on("value", function (snapshot) {

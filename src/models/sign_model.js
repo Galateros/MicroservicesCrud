@@ -74,3 +74,37 @@ exports.findByUser = (id) => {
     });
   })
 }
+
+/*
+exports.findLastSign = (id) => {
+  return new Promise((resolve, reject) => {
+    eventsRef.orderByChild('user').equalTo(id).limitToLast(1).on("value", function (snapshot) {
+      let events = snapshot.val()
+      console.log(events)
+      if (events) {
+        resolve(events);
+      } else {
+        reject(null)
+      }
+    }, function (errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+  })
+}*/
+
+exports.findLastSign = (id) => {
+  return new Promise((resolve, reject) => {
+    let event = null
+    eventsRef.orderByChild('user').equalTo(id).limitToLast(1).on("value", function (snapshot) {
+      snapshot.forEach(function (data) {
+        event = data.val()
+        if (event) {
+          resolve(event)
+        }
+      })
+      if (!snapshot.hasChildren()) {
+        reject(null)
+      }
+    });
+  });
+}
